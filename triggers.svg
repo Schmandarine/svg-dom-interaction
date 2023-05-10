@@ -1,0 +1,47 @@
+<svg
+	width="153"
+	height="151"
+	viewBox="0 0 153 151"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+>
+    <style>
+    #trigger-pane rect {transition: all 250ms}
+        #trigger-pane rect:hover {
+            opacity: 0.1
+        }
+    #trigger-pane rect.active { stroke:black; }
+    </style>
+<g id="trigger-pane">
+<rect class="" id="red" x="17" y="19" width="44" height="44" fill="#FF0000" />
+<rect id="green" x="88" y="19" width="44" height="44" fill="#24FF00" />
+<rect id="yellow" x="51" y="84" width="44" height="44" fill="#FFD600" />
+</g>
+  <script type="text/javascript">
+    <![CDATA[
+
+      const selectors = document.querySelectorAll("#trigger-pane > rect")
+      selectors.forEach((i) => { triggerHandler(i) })
+
+      function triggerHandler(i) {
+        i.addEventListener("click", (event) => { 
+
+          // do stuff here
+          window.parent.toggleClass(event.target, "active")
+          
+          // send to DOM
+          const message = { id: event.target.getAttribute('id') }
+          window.parent.postMessage(message, '*')
+         });
+      }
+      
+      window.addEventListener("message", (message) => {
+        const element = document.querySelector("#" + message.data)
+        element.classList.contains("active")
+          ? element.classList.remove("active")
+          : element.classList.add("active");
+      });
+      
+    ]]>
+  </script>
+</svg>
